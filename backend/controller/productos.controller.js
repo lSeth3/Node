@@ -10,7 +10,7 @@ const modelProductos= require("../models/productos.models")
     }
 }
 
-exports.consultarProducto =async(req,res)=>{
+exports.consultaProducto =async(req,res)=>{
     const consulta = await modelProductos.findOne({referencia: req.params.id})
     console.log(consulta)
     if(consulta){
@@ -21,16 +21,14 @@ exports.consultarProducto =async(req,res)=>{
     }
 }
 
-
 exports.eliminarProducto = async (req, res) => {
-    const eliminar = await productos.deleteOne({ _id: req.params.id })
+    const eliminar = await modelProductos.deleteOne({ _id: req.params.id })
     if (eliminar) {
         res.status(200).json({ "mensaje": "eliminado exitoso" })
     } else {
         res.status(404).json({ "mensaje": "no se realizo" })
     }
-};
-
+}
 
 exports.insertarProducto =async (req, res) => {
     const nuevoProducto = {
@@ -43,7 +41,7 @@ exports.insertarProducto =async (req, res) => {
         habilitado: req.body.habilitado
     }
 
-    const insercion = await productos.create(nuevoProducto)
+    const insercion = await modelProductos.create(nuevoProducto)
     
     if (insercion) {
         res.status(200).json({ "mensaje": "registro realizado" })
@@ -51,7 +49,7 @@ exports.insertarProducto =async (req, res) => {
         res.status(404).json({ "mensaje": "no se realizo" })
 
     }
-};
+}
 
 exports.editarProducto = async (req, res) => {
     const productEditar = {
@@ -63,7 +61,7 @@ exports.editarProducto = async (req, res) => {
         Imagen: req.body.imagen,
         habilitado: req.body.habilitado
     }
-    let actualizar = await productos.findOneAndUpdate({ _id: req.params.id }, productEditar)
+    let actualizar = await modelProductos.findOneAndUpdate({ _id: req.params.id }, productEditar)
     if (actualizar) {
         res.status(200).json({ "mensaje": "actualizado exitoso" })
     } else {

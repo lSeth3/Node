@@ -1,60 +1,60 @@
 const modelUsuarios= require("../models/usuarios.models")
+const modelClientes = require("../models/clientes.models")
 
 
-// registro de usuario - cliente
-
-app.post("/registroCompleto",async(req,res)=>{
+exports.RegistroUsuarioCompleto = async (req,res)=> {
     let datosUsuario = {
         correo: req.body.correo,
         pass: req.body.pass
     }
-    const usu = await usuario.create(datosUsuario)
+    const usu = await modelUsuarios.create(datosUsuario)
     let datoscliente = {
         nombre: req.body.nombre,
         telefono: req.body.telefono,
         direccion: req.body.direccion,
         usuario:usu._id
     }
-    const cli = await clientes.create(datoscliente)
+    const cli = await modelClientes.create(datoscliente)
     if (usu) {
         res.status(200).json({ "mensaje": "registro realizado" })
     } else {
         res.status(404).json({ "mensaje": "no se realizo" })
 
     }
-})
+}
 
-// usuario 
-app.post('/nuevoUsuario',async (req,res)=>{
+// usuario
+exports.insertarUsuario= async (req,res)=>{
     let datosUsuario = {
         correo: req.body.correo,
         pass: req.body.pass
     }
-    const nuevoUsu = await usuario.create(datosUsuario)
+    const nuevoUsu = await modelUsuarios.create(datosUsuario)
     if (nuevoUsu) {
         res.status(200).json({ "mensaje": "registro realizado" })
     } else {
         res.status(404).json({ "mensaje": "no se realizo" })
 
     }
-})
+}
 
-app.get('/usuarios',async(req,res)=>{
-    const consulta = await usuario.find({})
+exports.consultarUsuarios = async(req,res)=>{
+    const consulta = await modelUsuarios.find({})
     res.status(200).json(consulta)
-})
-app.get('/usuarios/:id',async(req,res)=>{
-    const consulta = await usuario.findOne({_id:req.params.id})
-    res.status(200).json(consulta)
-})
+}
 
-app.put("/usuarios/:id",async(req,res)=>{
+exports.consultaUsuario = async(req,res)=>{
+    const consulta = await modelUsuarios.findOne({_id:req.params.id})
+    res.status(200).json(consulta)
+}
+
+exports.editarUsuario = async(req,res)=>{
     let dataUser = {
         correo:req.body.correo,
         pass:req.body.pass
     }
 
-    const actualizado = await usuario.findOneAndUpdate({_id:req.params.id},dataUser)
+    const actualizado = await modelUsuarios.findOneAndUpdate({_id:req.params.id},dataUser)
     if (actualizado) {
         res.status(200).json({ "mensaje": "Actualizado con exito" })
     } else {
@@ -62,12 +62,13 @@ app.put("/usuarios/:id",async(req,res)=>{
         res.status(404).json({ "mensaje": "no se realizo" })
 
     }
-})
-app.delete("/usuarios/:id",async (req,res)=>{
-    const usuarioEliminado = await usuario.deleteOne({_id:req.params.id})
+}
+
+exports.eliminarUsuario = async (req,res)=>{
+    const usuarioEliminado = await modelUsuarios.deleteOne({_id:req.params.id})
     if(usuarioEliminado){
         res.status(200).json({"mensaje":"eliminado con exito"})
     }else{
         res.status(404).json({"mensaje":"No se pudo eliminar"})
     }
-})
+}
